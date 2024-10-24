@@ -95,15 +95,14 @@ class TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(width: 3),
-                    //color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('daily affirmation'),
-                      IconButton(onPressed: _save, icon: Icon(Icons.bookmark)),
-                    ],
+                  child: ListTile(
+                    
+                    title: Text('Daily Affirmation'),
+                    subtitle: (Text('Sample Text')),
+                    trailing: IconButton(onPressed: _save, icon: Icon(Icons.bookmark_outline)),
+
                   ),
                 )
               ],
@@ -115,15 +114,14 @@ class TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(width: 3),
-                    //color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('daily affirmation'),
-                      IconButton(onPressed: _save, icon: Icon(Icons.bookmark)),
-                    ],
+                  child: ListTile(
+                    
+                    title: Text('Daily Affirmation'),
+                    subtitle: (Text('Sample Text')),
+                    trailing: IconButton(onPressed: _save, icon: Icon(Icons.bookmark_outline)),
+
                   ),
                 )
               ],
