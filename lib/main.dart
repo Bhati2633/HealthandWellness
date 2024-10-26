@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project01/Affirmation.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +27,7 @@ class TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
   late TabController _tabController;
 
   final RestorableInt tabIndex = RestorableInt(0);
+  List<Affirmation> affirmations = [];
 
   @override
   String get restorationId => 'tab_non_scrollable_demo';
@@ -44,15 +46,12 @@ class TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
       length: 4,
       vsync: this,
     );
+    affirmations.add(Affirmation('This is your daily affirmation'));
     _tabController.addListener(() {
       setState(() {
         tabIndex.value = _tabController.index;
       });
     });
-  }
-
-  void _save() {
-
   }
 
   void _openSettings() {
@@ -100,9 +99,15 @@ class TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
                   child: ListTile(
                     
                     title: Text('Daily Affirmation'),
-                    subtitle: (Text('Sample Text')),
-                    trailing: IconButton(onPressed: _save, icon: Icon(Icons.bookmark_outline)),
-
+                    subtitle: (Text(affirmations[0].getText())),
+                    trailing: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          affirmations[0].toggleSaved();
+                        });
+                      },
+                      icon: affirmations[0].getIcon(), 
+                    ),
                   ),
                 )
               ],
@@ -110,22 +115,27 @@ class TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
           ),
           Center(
             child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 3),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: ListTile(
-                    
-                    title: Text('Daily Affirmation'),
-                    subtitle: (Text('Sample Text')),
-                    trailing: IconButton(onPressed: _save, icon: Icon(Icons.bookmark_outline)),
-
-                  ),
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: affirmations.length,
+                    itemBuilder: (context, index){
+                      return ListTile(
+                        title: Text(affirmations[index].getText()),
+                        trailing: IconButton(
+                          icon: affirmations[index].getIcon(), 
+                          onPressed: () {
+                            setState(() {
+                              affirmations[index].toggleSaved();
+                            });
+                          }
+                        ),
+                      );
+                    }
+                  )
                 )
               ],
-            )
+            ),
           ),
           Center(
             child: Image.network(
