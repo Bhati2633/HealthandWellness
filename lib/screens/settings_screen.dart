@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../screens/notification_service.dart'; // Adjust the import to your structure
+import '../utils/local_storage.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -9,6 +11,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   TimeOfDay exerciseReminderTime = TimeOfDay(hour: 8, minute: 0);
   TimeOfDay affirmationReminderTime = TimeOfDay(hour: 9, minute: 0);
 
+  @override
+  void initState() {
+    super.initState();
+    NotificationService.initialize();
+    _loadReminderTimes();
+  }
+
+  Future<void> _loadReminderTimes() async {
+    final savedExerciseTime = await LocalStorage.getExerciseStep(); // Get the saved exercise time
+    final savedAffirmationTime = await LocalStorage.getExerciseStep(); // Get the saved affirmation time
+
+    if (savedExerciseTime != null) {
+      exerciseReminderTime = TimeOfDay.fromDateTime(DateTime.parse(savedExerciseTime.toString()));
+    }
+    if (savedAffirmationTime != null) {
+      affirmationReminderTime = TimeOfDay.fromDateTime(DateTime.parse(savedAffirmationTime.toString()));
+    }
+  }
+
   Future<void> _selectTime(BuildContext context, bool isExerciseReminder) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -18,11 +39,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {
         if (isExerciseReminder) {
           exerciseReminderTime = picked;
+          LocalStorage.saveExerciseStep(picked.hour); // Save the hour for exercise reminder
         } else {
           affirmationReminderTime = picked;
+          LocalStorage.saveExerciseStep(picked.hour); // Save the hour for affirmation reminder
         }
       });
+      _scheduleNotification(picked, isExerciseReminder);
     }
+  }
+
+  Future<void> _scheduleNotification(TimeOfDay time, bool isExerciseReminder) async {
+    final now = DateTime.now();
+    DateTime scheduledTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+
+    if (scheduledTime.isBefore(now)) {
+      scheduledTime = scheduledTime.add(Duration(days: 1));
+    }
+
+    NotificationService.showNotification(
+      isExerciseReminder ? 'Exercise Reminder' : 'Affirmation Reminder',
+      'Time for your ${isExerciseReminder ? 'exercise' : 'affirmation'}!',
+    );
   }
 
   @override

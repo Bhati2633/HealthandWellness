@@ -37,7 +37,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     "Seated Forward Bend: Hamstring stretch",
     "Boat Pose: Core strength",
     'Repeat the process...',
-    
   ];
 
   double get _progress => (_currentStep + 1) / _steps.length;
@@ -74,39 +73,91 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mindfulness Exercise')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (_currentStep < _steps.length - 1)
-              Text(
-                _steps[_currentStep],
-                style: TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
-              )
-            else
-              Column(
-                children: [
-                  Text(
-                    'Congrats, you have finished the exercise!',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+      appBar: AppBar(
+        title: Text('Mindfulness Exercise'),
+        backgroundColor: Colors.purple.shade800,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.black54,
+              Colors.purple.shade900,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Center(
+                    child: _currentStep < _steps.length - 1
+                        ? Text(
+                            _steps[_currentStep],
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Congrats, you have finished the exercise!',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: _startOver,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white, // Light background
+                                  foregroundColor: Colors.purple.shade700, // Text color
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                    horizontal: 24.0,
+                                  ),
+                                ),
+                                child: Text(
+                                  'Start Over',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ],
+                          ),
                   ),
-                  SizedBox(height: 20),
+                ),
+                SizedBox(height: 20),
+                if (_currentStep < _steps.length - 1)
                   ElevatedButton(
-                    onPressed: _startOver,
-                    child: Text('Start Over'),
+                    onPressed: _nextStep,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Light background
+                      foregroundColor: Colors.purple.shade700, // Text color
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                    ),
+                    child: Text(
+                      'Next Step',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
-                ],
-              ),
-            SizedBox(height: 20),
-            if (_currentStep < _steps.length - 1)
-              ElevatedButton(
-                onPressed: _nextStep,
-                child: Text('Next Step'),
-              ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -64,44 +64,100 @@ class _AffirmationScreenState extends State<AffirmationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Affirmations')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _affirmations[_currentIndex],
-              style: TextStyle(fontSize: 24, fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: _previousAffirmation,
-                  child: Text('Previous'),
-                ),
-                ElevatedButton(
-                  onPressed: _saveAffirmation,
-                  child: Text('Save'),
-                ),
-                ElevatedButton(
-                  onPressed: _nextAffirmation,
-                  child: Text('Next'),
-                ),
-              ],
-            ),
-            if (_currentIndex == _affirmations.length - 1)
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                  onPressed: _startOver,
-                  child: Text('Start Over'),
+      appBar: AppBar(
+        title: Text('Affirmations'),
+        backgroundColor: Colors.purple.shade800,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.black54,
+              Colors.purple.shade900,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Center(
+                  child: Text(
+                    _affirmations[_currentIndex],
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-          ],
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: _previousAffirmation,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Light background
+                      foregroundColor: Colors.purple.shade700, // Text color
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                    ),
+                    child: Text('Previous'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _saveAffirmation,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Light background
+                      foregroundColor: Colors.purple.shade700, // Text color
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                    ),
+                    child: Text('Save'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _nextAffirmation,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Light background
+                      foregroundColor: Colors.purple.shade700, // Text color
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                    ),
+                    child: Text('Next'),
+                  ),
+                ],
+              ),
+              if (_currentIndex == _affirmations.length - 1)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: ElevatedButton(
+                    onPressed: _startOver,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Light background
+                      foregroundColor: Colors.purple.shade700, // Text color
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                    ),
+                    child: Text('Start Over'),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

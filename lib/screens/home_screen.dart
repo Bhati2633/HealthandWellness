@@ -32,43 +32,85 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mindfulness Home'),
-        backgroundColor: Colors.purple,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Saved Affirmation:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 10),
-            Text(
-              _latestAffirmation,
-              style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/exercise'),
-              child: Text('Start Exercise'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/affirmation'),
-              child: Text('View Affirmations'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/progress'),
-              child: Text('View Progress'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/settings'),
-              child: Text('Settings'),
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.jpg'), // Add your background image here
+            fit: BoxFit.cover,
+          ),
         ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black54, // Semi-transparent background for better text visibility
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Today\'s Affirmation:',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    _latestAffirmation,
+                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic, color: Colors.white70),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 30),
+
+                  // Buttons with style and spacing
+                  _buildStyledButton(
+                    context, 
+                    label: 'Start Exercise', 
+                    onPressed: () => Navigator.pushNamed(context, '/exercise')
+                  ),
+                  SizedBox(height: 16),
+                  _buildStyledButton(
+                    context, 
+                    label: 'View Affirmations', 
+                    onPressed: () => Navigator.pushNamed(context, '/affirmation')
+                  ),
+                  SizedBox(height: 16),
+                  _buildStyledButton(
+                    context, 
+                    label: 'View Progress', 
+                    onPressed: () => Navigator.pushNamed(context, '/progress')
+                  ),
+                  SizedBox(height: 16),
+                  _buildStyledButton(
+                    context, 
+                    label: 'Settings', 
+                    onPressed: () => Navigator.pushNamed(context, '/settings')
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStyledButton(BuildContext context, {required String label, required VoidCallback onPressed}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.purple.shade700, // Button background color
+        foregroundColor: Colors.white, // Button text color
+        padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        elevation: 5,
+      ),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     );
   }
