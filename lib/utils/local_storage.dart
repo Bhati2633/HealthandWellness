@@ -1,11 +1,11 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
   static const String _keyAffirmations = 'saved_affirmations';
+  static const String _keyExerciseProgress = 'exercise_progress';
   static final StreamController<String> _affirmationController = StreamController<String>.broadcast();
 
-  // Stream to listen to saved affirmations
   static Stream<String> get affirmationStream => _affirmationController.stream;
 
   static Future<void> saveAffirmation(String affirmation) async {
@@ -13,8 +13,6 @@ class LocalStorage {
     List<String> savedAffirmations = prefs.getStringList(_keyAffirmations) ?? [];
     savedAffirmations.add(affirmation);
     prefs.setStringList(_keyAffirmations, savedAffirmations);
-    
-    // Notify listeners with the latest affirmation
     _affirmationController.add(affirmation);
   }
 
@@ -27,4 +25,27 @@ class LocalStorage {
     List<String> savedAffirmations = await getSavedAffirmations();
     return savedAffirmations.isNotEmpty ? savedAffirmations.last : null;
   }
+
+  static Future<void> saveExerciseProgress(double progress) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble(_keyExerciseProgress, progress);
+  }
+
+  static Future<double> getExerciseProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(_keyExerciseProgress) ?? 0.0;
+  }
+
+  static const String _keyExerciseStep = 'exercise_step';
+
+static Future<void> saveExerciseStep(int step) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt(_keyExerciseStep, step);
+}
+
+static Future<int?> getExerciseStep() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getInt(_keyExerciseStep);
+}
+
 }

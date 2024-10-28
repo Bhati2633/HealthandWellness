@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:project01/utils/local_storage.dart';
 
 class ProgressScreen extends StatefulWidget {
   @override
@@ -8,8 +8,20 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
-  double exerciseProgress = 0.7; // Example completion of 70%
-  double affirmationProgress = 0.5; // Example completion of 50%
+  double exerciseProgress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExerciseProgress();
+  }
+
+  Future<void> _loadExerciseProgress() async {
+    double progress = await LocalStorage.getExerciseProgress();
+    setState(() {
+      exerciseProgress = progress;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +40,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
               center: Text('${(exerciseProgress * 100).toInt()}%'),
               linearStrokeCap: LinearStrokeCap.roundAll,
               progressColor: Colors.purple,
-            ),
-            SizedBox(height: 24),
-            Text('Affirmation Progress', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            LinearPercentIndicator(
-              lineHeight: 14.0,
-              percent: affirmationProgress,
-              center: Text('${(affirmationProgress * 100).toInt()}%'),
-              linearStrokeCap: LinearStrokeCap.roundAll,
-              progressColor: Colors.purpleAccent,
             ),
           ],
         ),

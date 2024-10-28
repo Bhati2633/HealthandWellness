@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project01/utils/local_storage.dart';
 
 class ExerciseScreen extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   final List<String> _steps = [
     'Take a deep breath...',
     'Hold your breath...',
-    'Slowly exhale...',
+    'Exhale slowly...',
     'Close your eyes and focus on your breathing.',
     'Visualize a place where you feel completely relaxed.',
     'Stretch your arms and let go of any tension.',
@@ -35,13 +36,29 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     "Triangle Pose: Side stretch",
     "Seated Forward Bend: Hamstring stretch",
     "Boat Pose: Core strength",
-    'Repeat the process...'
+    'Repeat the process...',
+    
   ];
+
+  double get _progress => (_currentStep + 1) / _steps.length;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedStep();
+  }
+
+  Future<void> _loadSavedStep() async {
+    _currentStep = await LocalStorage.getExerciseStep() ?? 0;
+    setState(() {});  // Update UI with the saved step
+  }
 
   void _nextStep() {
     setState(() {
       if (_currentStep < _steps.length - 1) {
         _currentStep++;
+        LocalStorage.saveExerciseProgress(_progress);
+        LocalStorage.saveExerciseStep(_currentStep);  // Save current step
       }
     });
   }
@@ -49,6 +66,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   void _startOver() {
     setState(() {
       _currentStep = 0;
+      LocalStorage.saveExerciseProgress(_progress);
+      LocalStorage.saveExerciseStep(_currentStep);  // Reset saved step
     });
   }
 
