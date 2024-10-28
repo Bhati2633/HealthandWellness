@@ -35,11 +35,20 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     "Triangle Pose: Side stretch",
     "Seated Forward Bend: Hamstring stretch",
     "Boat Pose: Core strength",
-    'Repeat the process...'];
+    'Repeat the process...'
+  ];
 
   void _nextStep() {
     setState(() {
-      _currentStep = (_currentStep + 1) % _steps.length;
+      if (_currentStep < _steps.length - 1) {
+        _currentStep++;
+      }
+    });
+  }
+
+  void _startOver() {
+    setState(() {
+      _currentStep = 0;
     });
   }
 
@@ -51,12 +60,33 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(_steps[_currentStep], style: TextStyle(fontSize: 20)),
+            if (_currentStep < _steps.length - 1)
+              Text(
+                _steps[_currentStep],
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              )
+            else
+              Column(
+                children: [
+                  Text(
+                    'Congrats, you have finished the exercise!',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _startOver,
+                    child: Text('Start Over'),
+                  ),
+                ],
+              ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _nextStep,
-              child: Text('Next Step'),
-            ),
+            if (_currentStep < _steps.length - 1)
+              ElevatedButton(
+                onPressed: _nextStep,
+                child: Text('Next Step'),
+              ),
           ],
         ),
       ),
