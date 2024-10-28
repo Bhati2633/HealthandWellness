@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../screens/notification_service.dart'; // Adjust the import to your structure
 import '../utils/local_storage.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -14,7 +13,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    NotificationService.initialize();
     _loadReminderTimes();
   }
 
@@ -45,22 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           LocalStorage.saveExerciseStep(picked.hour); // Save the hour for affirmation reminder
         }
       });
-      _scheduleNotification(picked, isExerciseReminder);
     }
-  }
-
-  Future<void> _scheduleNotification(TimeOfDay time, bool isExerciseReminder) async {
-    final now = DateTime.now();
-    DateTime scheduledTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-
-    if (scheduledTime.isBefore(now)) {
-      scheduledTime = scheduledTime.add(Duration(days: 1));
-    }
-
-    NotificationService.showNotification(
-      isExerciseReminder ? 'Exercise Reminder' : 'Affirmation Reminder',
-      'Time for your ${isExerciseReminder ? 'exercise' : 'affirmation'}!',
-    );
   }
 
   @override
